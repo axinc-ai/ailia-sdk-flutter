@@ -1,6 +1,6 @@
 name: ailia
-description: A new Flutter plugin project.
-version: 0.0.1
+description: ailia SDK for Flutter
+version: 1.3.0
 homepage:
 
 environment:
