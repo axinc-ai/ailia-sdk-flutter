@@ -52,7 +52,15 @@ target_link_libraries(${PLUGIN_NAME} PRIVATE flutter flutter_wrapper_plugin)
 # This list could contain prebuilt libraries, or libraries created by an
 # external build triggered from this build file.
 set(ailia_bundled_libraries
-  "x64/*.dll"
+  "${CMAKE_CURRENT_SOURCE_DIR}/x64/ailia_blas.dll"
+  "${CMAKE_CURRENT_SOURCE_DIR}/x64/ailia_cuda_7.dll"
+  "${CMAKE_CURRENT_SOURCE_DIR}/x64/ailia_cuda_8_3.dll"
+  "${CMAKE_CURRENT_SOURCE_DIR}/x64/ailia_cuda_8_8.dll"
+  "${CMAKE_CURRENT_SOURCE_DIR}/x64/ailia_cuda_8.dll"
+  "${CMAKE_CURRENT_SOURCE_DIR}/x64/ailia_pose_estimate.dll"
+  "${CMAKE_CURRENT_SOURCE_DIR}/x64/ailia_vulkan.dll"
+  "${CMAKE_CURRENT_SOURCE_DIR}/x64/ailia.dll"
+  "${CMAKE_CURRENT_SOURCE_DIR}/x64/libiomp5md.dll"
   PARENT_SCOPE
 )
 

@@ -45,7 +45,14 @@ target_link_libraries(${PLUGIN_NAME} PRIVATE PkgConfig::GTK)
 # This list could contain prebuilt libraries, or libraries created by an
 # external build triggered from this build file.
 set(ailia_bundled_libraries
-  "x64/*.so"
+  "${CMAKE_CURRENT_SOURCE_DIR}/x64/libailia_blas.so"
+  "${CMAKE_CURRENT_SOURCE_DIR}/x64/libailia_cuda-7.so"
+  "${CMAKE_CURRENT_SOURCE_DIR}/x64/libailia_cuda-8.3.so"
+  "${CMAKE_CURRENT_SOURCE_DIR}/x64/libailia_cuda-8.8.so"
+  "${CMAKE_CURRENT_SOURCE_DIR}/x64/libailia_cuda-8.so"
+  "${CMAKE_CURRENT_SOURCE_DIR}/x64/libailia_pose_estimate.so"
+  "${CMAKE_CURRENT_SOURCE_DIR}/x64/libailia_vulkan.so"
+  "${CMAKE_CURRENT_SOURCE_DIR}/x64/libailia.so"
   PARENT_SCOPE
 )
 
