@@ -1,6 +1,12 @@
 import 'dart:io';
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:ffi/ffi.dart';
+import 'dart:typed_data';
+import 'dart:convert';
+
+import 'ailia.dart' as ailia_dart;
 
 class AiliaLicense {
   static const String licenseServer = 'axip-console.appspot.com';
@@ -9,7 +15,7 @@ class AiliaLicense {
       '--- shalo license file ---\naxell:ailia\n';
   static bool displayLicenseWarning = true;
 
-  static Future<void> downloadLicense(String licPath) async {
+  static Future<void> _downloadLicense(String licPath) async {
     final uri = Uri.https(licenseServer, licenseApi);
     final response = await http.get(uri);
 
@@ -21,7 +27,7 @@ class AiliaLicense {
     }
   }
 
-  static Future<String?> checkLicense(String licPath) async {
+  static Future<String?> _checkLicense(String licPath) async {
     final file = File(licPath);
     if (!await file.exists()) {
       debugPrint("License file $licPath is not found.");
@@ -60,7 +66,7 @@ class AiliaLicense {
     return lines.length > 3 ? lines[3] : "";
   }
 
-  static void displayWarning() {
+  static void _displayWarning() {
     if (!displayLicenseWarning) return;
 
     final String defaultLocale = Platform.localeName;
@@ -80,7 +86,7 @@ class AiliaLicense {
     displayLicenseWarning = false;
   }
 
-  static String getLicenseFolderPath() {
+  static String _getLicenseFolderPath() {
     Map<String, String> envVars = Platform.environment;
     var home = envVars['HOME'];
     var folderPath = "";
@@ -95,20 +101,61 @@ class AiliaLicense {
     return folderPath;
   }
 
-  static Future<void> checkAndDownloadLicense(String version) async {
+  static String _ailiaCommonGetPath() {
+    if (Platform.isAndroid || Platform.isLinux) {
+      return 'libailia.so';
+    }
+    if (Platform.isMacOS) {
+      return 'libailia.dylib';
+    }
+    if (Platform.isWindows) {
+      return 'ailia.dll';
+    }
+    return 'internal';
+  }
+
+  static DynamicLibrary _ailiaCommonGetLibrary(String path) {
+    final DynamicLibrary library;
+    if (Platform.isIOS) {
+      library = DynamicLibrary.process();
+    } else {
+      library = DynamicLibrary.open(path);
+    }
+    return library;
+  }
+
+  static String _pointerCharToString(Pointer<Int8> pointer) {
+    var length = 0;
+    while (pointer.elementAt(length).value != 0) {
+      length++;
+    }
+
+    var buffer = Uint8List(length);
+    for (var i = 0; i < length; i++) {
+      buffer[i] = pointer.elementAt(i).value;
+    }
+
+    return utf8.decode(buffer);
+  }
+
+  static Future<void> checkAndDownloadLicense() async {
+    var ailia = ailia_dart.ailiaFFI(_ailiaCommonGetLibrary(_ailiaCommonGetPath()));
+    final Pointer<Int8> versionPointer = ailia.ailiaGetVersion();
+    String version = _pointerCharToString(versionPointer);
+
     if (version.contains("perpetual_license")) {
       return;
     }
 
-    final licFolder = getLicenseFolderPath();
+    final licFolder = _getLicenseFolderPath();
     final licFile = "$licFolder/AILIA.lic";
 
-    var userData = await checkLicense(licFile);
+    var userData = await _checkLicense(licFile);
     if (userData == null) {
       debugPrint("Downloading license file for ailia SDK.");
       await Directory(licFolder).create(recursive: true);
-      await downloadLicense(licFile);
-      userData = await checkLicense(licFile);
+      await _downloadLicense(licFile);
+      userData = await _checkLicense(licFile);
     }
 
     if (userData == null) {
@@ -117,7 +164,7 @@ class AiliaLicense {
     }
 
     if (userData.contains("trial version")) {
-      displayWarning();
+      _displayWarning();
     }
   }
 }

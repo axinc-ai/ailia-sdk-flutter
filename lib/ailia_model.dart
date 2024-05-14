@@ -3,10 +3,9 @@
 import 'dart:ffi';
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:convert';
 import 'package:ffi/ffi.dart';
 import 'ailia.dart' as ailia_dart;
-import 'ailia_license.dart';
-import 'dart:convert';
 
 class AiliaDetail {
   String name = "";
@@ -69,27 +68,9 @@ class AiliaModel {
     return library;
   }
 
-  String _pointerCharToString(Pointer<Char> pointer) {
-    var length = 0;
-    while (pointer.elementAt(length).value != 0) {
-      length++;
-    }
-
-    var buffer = Uint8List(length);
-    for (var i = 0; i < length; i++) {
-      buffer[i] = pointer.elementAt(i).value;
-    }
-
-    return utf8.decode(buffer);
-  }
-
   void _open(int envId, int memoryMode) {
     ailia = ailia_dart.ailiaFFI(_ailiaCommonGetLibrary(_ailiaCommonGetPath()));
     ppAilia = malloc<Pointer<ailia_dart.AILIANetwork>>();
-
-    final Pointer<Char> version = ailia.ailiaGetVersion();
-    String versionString = _pointerCharToString(version);
-    AiliaLicense.checkAndDownloadLicense(versionString);
 
     int status = ailia.ailiaCreate(
       ppAilia,
