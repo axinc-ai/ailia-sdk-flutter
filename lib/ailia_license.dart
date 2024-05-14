@@ -1,10 +1,9 @@
 import 'dart:io';
 import 'dart:ffi';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:ffi/ffi.dart';
 import 'dart:typed_data';
 import 'dart:convert';
+
+import 'package:http/http.dart' as http;
 
 import 'ailia.dart' as ailia_dart;
 
@@ -14,6 +13,10 @@ class AiliaLicense {
   static const String licenseFileFormat =
       '--- shalo license file ---\naxell:ailia\n';
   static bool displayLicenseWarning = true;
+
+  static void debugPrint(String message){
+    print(message);
+  }
 
   static Future<void> _downloadLicense(String licPath) async {
     final uri = Uri.https(licenseServer, licenseApi);
