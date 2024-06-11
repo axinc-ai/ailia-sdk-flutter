@@ -57,6 +57,7 @@ set(ailia_bundled_libraries
   "${CMAKE_CURRENT_SOURCE_DIR}/x64/ailia_cuda_8_3.dll"
   "${CMAKE_CURRENT_SOURCE_DIR}/x64/ailia_cuda_8_8.dll"
   "${CMAKE_CURRENT_SOURCE_DIR}/x64/ailia_cuda_8.dll"
+  "${CMAKE_CURRENT_SOURCE_DIR}/x64/ailia_cuda_9.dll"
   "${CMAKE_CURRENT_SOURCE_DIR}/x64/ailia_pose_estimate.dll"
   "${CMAKE_CURRENT_SOURCE_DIR}/x64/ailia_vulkan.dll"
   "${CMAKE_CURRENT_SOURCE_DIR}/x64/ailia.dll"
