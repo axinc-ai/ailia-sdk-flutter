@@ -6,7 +6,7 @@
 
 // Dummy link to keep libailia.a from being deleted
 
-extern const char* AILIA_API ailiaGetErrorDetail(void* net);
+extern const char* ailiaGetErrorDetail(void* net);
 
 void test(void){
     ailiaGetErrorDetail(0);
