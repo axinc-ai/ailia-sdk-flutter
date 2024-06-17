@@ -9,3 +9,16 @@ ailia/macos/libailia.dylib
 ailia/macos/libailia_audio.dylib
 ailia/macos/libailia_blas.dylib
 ailia/macos/libailia_pose_estimate.dylib
+
+Please put interface here.
+
+native/ailia.h
+native/ailia_classifier.h
+native/ailia_detector.h
+native/ailia_feature_extractor.h
+native/ailia_format.h
+native/ailia_pose_estimator.h
+
+Please run below command for generation.
+
+dart run ffigen --config ffigen_ailia.yaml
