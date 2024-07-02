@@ -371,10 +371,16 @@ class AiliaModel {
       Pointer<ailia_dart.AILIAEnvironment> pEnv = ppEnv.value;
       malloc.free(ppEnv);
       AiliaEnvironment env = AiliaEnvironment();
-      env.id = pEnv.ref.id;
-      env.name = pEnv.ref.name.cast<Utf8>().toDartString();
-      env.props = pEnv.ref.props;
-      envList.add(env);
+      try {
+        env.id = pEnv.ref.id;
+        env.props = pEnv.ref.props;
+        env.name = pEnv.ref.name
+            .cast<Utf8>()
+            .toDartString(); // This always fails one time in this loop
+        envList.add(env);
+      } catch (error) {
+        print("ailiaGetEnvironment failed $error");
+      }
     }
     malloc.free(count);
     return envList;
