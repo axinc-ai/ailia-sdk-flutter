@@ -46,6 +46,17 @@ class AiliaModel {
   bool _available = false;
 
   static String _ailiaCommonGetPath() {
+    if (Platform.environment.containsKey('FLUTTER_TEST')) {
+      if (Platform.isMacOS) {
+        return 'macos/libailia.dylib';
+      }
+      if (Platform.isLinux) {
+        return 'linux/x64/libailia.so';
+      }
+      if (Platform.isWindows) {
+        return 'windows/x64/ailia.dll';
+      }
+    }
     if (Platform.isAndroid || Platform.isLinux) {
       return 'libailia.so';
     }
