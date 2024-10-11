@@ -98,6 +98,24 @@ class AiliaModel {
     }
   }
 
+  static void setTemporaryCachePath(String path){
+    dynamic ailia = ailia_dart.ailiaFFI(_ailiaCommonGetLibrary(_ailiaCommonGetPath()));
+
+    int status = 0;
+    if (Platform.isWindows) {
+      status = ailia.ailiaSetTemporaryCachePathW(
+        path.toNativeUtf16().cast<Int16>(),
+      );
+    } else {
+      status = ailia.ailiaSetTemporaryCachePathA(
+        path.toNativeUtf8().cast<Int8>(),
+      );
+    }
+    if (status != ailia_dart.AILIA_STATUS_SUCCESS) {
+      throw Exception("ailiaSetTemporaryCachePath failed $status");
+    }
+  }
+
   void openFile(String onnxPath,
       {int envId = ailia_dart.AILIA_ENVIRONMENT_ID_AUTO,
       int memoryMode = ailia_dart.AILIA_MEMORY_OPTIMAIZE_DEFAULT}) {

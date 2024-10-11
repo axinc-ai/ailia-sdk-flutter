@@ -17,6 +17,7 @@ import 'ailia_predict_sample.dart';
 
 // License
 import 'package:ailia/ailia_license.dart';
+import 'package:ailia/ailia_model.dart';
 
 void main() {
   runApp(const MyApp());
@@ -95,6 +96,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _ailiaTest() async{
     await AiliaLicense.checkAndDownloadLicense();
+
+    // Set Temporary Cache Path
+    Directory path = await getTemporaryDirectory();
+    AiliaModel.setTemporaryCachePath(path.path);
 
     // Load image
     loadImageFromAssets("assets/clock.jpg").then(
