@@ -53,7 +53,6 @@ target_link_libraries(${PLUGIN_NAME} PRIVATE flutter flutter_wrapper_plugin)
 # external build triggered from this build file.
 set(ailia_bundled_libraries
   "${CMAKE_CURRENT_SOURCE_DIR}/x64/ailia_blas.dll"
-  "${CMAKE_CURRENT_SOURCE_DIR}/x64/ailia_cuda_7.dll"
   "${CMAKE_CURRENT_SOURCE_DIR}/x64/ailia_cuda_8_3.dll"
   "${CMAKE_CURRENT_SOURCE_DIR}/x64/ailia_cuda_8_8.dll"
   "${CMAKE_CURRENT_SOURCE_DIR}/x64/ailia_cuda_8.dll"
